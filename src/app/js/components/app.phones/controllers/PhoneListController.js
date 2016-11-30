@@ -3,8 +3,6 @@ var app;
 
     var phones;
     (function(phones) {
-        'use strict';
-
         var PhoneListController = (function() {
             function PhoneListController($scope) {
                 var _this = this;
@@ -25,7 +23,7 @@ var app;
             };
 
             PhoneListController.prototype._onDestroy = function() {
-                // Do nothing for now
+                _this.phones = [];
             };
 
             PhoneListController.prototype.getPhoneList = function() {
@@ -34,6 +32,18 @@ var app;
 
             return PhoneListController;
         })();
+
+        angular.module('app.phones').directive('phoneList', function() {
+            return {
+                restrict: 'AE',
+                controller: PhoneListController,
+                controllerAs: 'phoneListCtrl',
+                bindToController: {
+                    phone: '='
+                },
+                templateUrl: 'src/app/js/components/app.phones/partials/list.html'
+            };
+        });
 
         phones.PhoneListController = PhoneListController;
     })(phones = app.phones || (app.phones = {}));

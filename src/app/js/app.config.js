@@ -4,7 +4,9 @@ angular.module('app')
 
         $routeProvider
             .when('/', {
-                templateUrl: 'src/app/js/components/app.phones/partials/list.html',
+                template: function() {
+                    return '<phone-list></phone-list>'
+                },
                 controller: 'app.phones.PhoneListController'
             })
             .otherwise({

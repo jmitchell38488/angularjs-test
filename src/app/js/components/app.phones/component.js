@@ -8,12 +8,12 @@ var app;
 
         module.controller('app.phones.PhoneListController', ['$scope',
             function($scope) {
-                return new app.phones.PhoneListController($scope);
+                return new phones.PhoneListController($scope);
             }]);
 
         module.controller('app.phones.PhoneDetailsController', ['$scope',
             function($scope) {
-                return new app.phones.PhoneDetailsController($scope);
+                return new phones.PhoneDetailsController($scope);
             }]);
 
     })(phones = app.phones || (app.phones = {}));
