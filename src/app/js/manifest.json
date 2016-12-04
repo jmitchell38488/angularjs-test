@@ -1,0 +1,24 @@
+{
+  "modules": [
+    {
+      "id": "app.phones",
+      "name": "Phones",
+      "dependencies": [],
+      "roles": [],
+      "files": [
+        "components/app.phones/module.js",
+        "components/app.phones/component.js",
+        "components/app.phones/controllers/PhoneListController.js",
+        "components/app.phones/controllers/PhoneDetailsController.js"
+      ],
+      "config": {
+        "title": "Phones",
+        "applicationId": "app.phones",
+        "contentDirective": "phones",
+        "routes": [
+          "/"
+        ]
+      }
+    }
+  ]
+}
