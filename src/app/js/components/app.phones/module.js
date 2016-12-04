@@ -1,3 +1,3 @@
 'use strict';
 
-var module = angular.module('app.phones', []);
+angular.module('app.phones', ['ngResource']);

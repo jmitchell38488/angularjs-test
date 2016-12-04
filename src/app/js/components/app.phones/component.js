@@ -6,9 +6,10 @@ var app;
     (function(phones) {
         var module = angular.module('app.phones');
 
-        module.controller('app.phones.PhoneListController', ['$scope',
-            function($scope) {
-                return new phones.PhoneListController($scope);
+        module.controller('app.phones.PhoneListController', [
+            '$scope', 'PhoneListService',
+            function($scope, PhoneListService) {
+                return new phones.PhoneListController($scope, PhoneListService);
             }]);
 
         module.controller('app.phones.PhoneDetailsController', ['$scope',
