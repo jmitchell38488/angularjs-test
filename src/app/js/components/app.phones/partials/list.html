@@ -1,7 +1,7 @@
 <p>Displaying phone list ({{ phoneListCtrl.getPhoneList().length + " phones"}}):</p>
 <ul>
     <li info="{{phone.name}}" ng-repeat="phone in phoneListCtrl.getPhoneList()">
-        <span>{{phone.name}}</span>
+        <a href="#!/phones/{{phone.id}}"><span>{{phone.name}}</span></a>
         <p>{{phone.snippet}}</p>
     </li>
 </ul>

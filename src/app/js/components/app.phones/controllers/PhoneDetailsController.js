@@ -1,26 +1,67 @@
+'use strict';
+
 var app;
 (function(app) {
 
     var phones;
     (function(phones) {
-        'use strict';
-
         var PhoneDetailsController = (function() {
-            function PhoneDetailsController($scope) {
+            function PhoneDetailsController($routeParams, PhoneListService) {
                 var _this = this;
-                this.$scope = $scope;
+                _this.currentImage = 0;
+                _this.images = [];
+                _this.phoneDetails = {};
+                _this.phoneId = $routeParams.phoneId;
 
-                $scope.$on('$destroy', function () {
-                    return _this._onDestroy();
-                });
+                // Load the phone details
+                _this._loadPhoneDetails($routeParams, PhoneListService);
             }
 
-            PhoneDetailsController.prototype._onDestroy = function() {
-                // Do nothing for now
+            PhoneDetailsController.prototype._loadPhoneDetails = function($routeParams, PhoneListService) {
+                var _this = this;
+                PhoneListService.get({phoneId: $routeParams.phoneId}, function(phoneDetails) {
+                    _this._loadPhoneImages(phoneDetails.images);
+                    _this.phoneDetails = phoneDetails;
+                });
+            };
+
+            PhoneDetailsController.prototype._loadPhoneImages = function(images/*[]*/) {
+                if (angular.isArray(images)) {
+                    this.images = images;
+                    this.currentImage = 0;
+                }
+            };
+
+            PhoneDetailsController.prototype.getPhoneDetails = function() {
+                return this.phoneDetails;
+            };
+
+            PhoneDetailsController.prototype.getImageList = function() {
+                return this.images;
+            };
+
+            PhoneDetailsController.prototype.getCurrentImage = function() {
+                return this.images[this.currentImage];
             };
 
             return PhoneDetailsController;
         })();
+
+        angular.module('app.phones').directive('phoneDetails', function() {
+            return {
+                restrict: 'AE',
+                controller: [
+                    '$routeParams',
+                    'PhoneListService',
+                    PhoneDetailsController
+                ],
+                controllerAs: 'phoneDetailsCtrl',
+                /*bindToController: {
+                    phone: '='
+                },*/
+                templateUrl: 'src/app/js/components/app.phones/partials/details.html'
+            };
+        });
 
         phones.PhoneDetailsController = PhoneDetailsController;
     })(phones = app.phones || (app.phones = {}));

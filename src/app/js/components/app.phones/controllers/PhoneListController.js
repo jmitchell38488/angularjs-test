@@ -1,3 +1,5 @@
+'use strict';
+
 var app;
 (function(app) {
 
@@ -6,8 +8,8 @@ var app;
         var PhoneListController = (function() {
             function PhoneListController($scope, PhoneListService) {
                 var _this = this;
-                _this.$scope = $scope;
                 _this.phones = [];
+                _this.orderProp = 'age';
 
                 $scope.$on('$destroy', function () {
                     return _this._onDestroy();
@@ -18,17 +20,18 @@ var app;
 
             PhoneListController.prototype._createPhonesList = function(PhoneListService) {
                 this.phones = PhoneListService.query();
-                /*this.phones.push({name: 'Nexus S',snippet: 'Fast just got faster with Nexus S.'});
-                this.phones.push({name: 'Motorola XOOM™ with Wi-Fi',snippet: 'The Next, Next Generation tablet.'});
-                this.phones.push({name: 'MOTOROLA XOOM™',snippet: 'The Next, Next Generation tablet.'});*/
             };
 
             PhoneListController.prototype._onDestroy = function() {
-                _this.phones = [];
+                this.phones = [];
             };
 
             PhoneListController.prototype.getPhoneList = function() {
                 return this.phones;
+            };
+
+            PhoneListController.prototype.getOrderProp = function() {
+                return this.orderProp;
             };
 
             return PhoneListController;

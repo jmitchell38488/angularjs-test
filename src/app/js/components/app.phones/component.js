@@ -12,9 +12,10 @@ var app;
                 return new phones.PhoneListController($scope, PhoneListService);
             }]);
 
-        module.controller('app.phones.PhoneDetailsController', ['$scope',
-            function($scope) {
-                return new phones.PhoneDetailsController($scope);
+        module.controller('app.phones.PhoneDetailsController', [
+            '$routeParams', 'PhoneListService',
+            function($routeParams, PhoneListService) {
+                return new phones.PhoneDetailsController($routeParams, PhoneListService);
             }]);
 
     })(phones = app.phones || (app.phones = {}));
