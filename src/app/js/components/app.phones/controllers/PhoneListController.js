@@ -35,12 +35,8 @@ var app;
                 return this.orderProp;
             };
 
-            PhoneListController.prototype.getQuery = function() {
+                PhoneListController.prototype.getQuery = function() {
                 return this.query;
-            };
-
-            PhoneListController.prototype.setQuery = function(query) {
-                this.query = query;
             };
 
             PhoneListController.prototype.getImageUrl = function(imageUri) {

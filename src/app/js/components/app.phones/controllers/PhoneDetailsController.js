@@ -44,6 +44,10 @@ var app;
                 return this.images[this.currentImage];
             };
 
+            PhoneDetailsController.prototype.getImageUrl = function(imageUri) {
+                return imageUri != null && imageUri.length > 0 ? "src/app/res/" + imageUri : imageUri;
+            };
+
             return PhoneDetailsController;
         })();
 
