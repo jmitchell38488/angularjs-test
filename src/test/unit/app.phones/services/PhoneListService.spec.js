@@ -5,9 +5,9 @@ describe('PhoneListService', function() {
     var PhoneListService;
 
     var phonesData = [];
-    phonesData.push({id: 0, name: 'Nexus S',snippet: 'Fast just got faster with Nexus S.'});
-    phonesData.push({id: 1, name: 'Motorola XOOM™ with Wi-Fi',snippet: 'The Next, Next Generation tablet.'});
-    phonesData.push({id: 2, name: 'MOTOROLA XOOM™',snippet: 'The Next, Next Generation tablet.'});
+    phonesData.push({id: 0, age: 2, name: 'Nexus S',snippet: 'Fast just got faster with Nexus S.'});
+    phonesData.push({id: 1, age: 1, name: 'Motorola XOOM™ with Wi-Fi',snippet: 'The Next, Next Generation tablet.'});
+    phonesData.push({id: 2, age: 0, name: 'MOTOROLA XOOM™',snippet: 'The Next, Next Generation tablet.'});
 
     var phoneDetails = phonesData[1];
 
