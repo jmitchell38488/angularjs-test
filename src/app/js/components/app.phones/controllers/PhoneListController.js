@@ -10,6 +10,7 @@ var app;
                 var _this = this;
                 _this.phones = [];
                 _this.orderProp = 'age';
+                _this.query = "";
 
                 $scope.$on('$destroy', function () {
                     return _this._onDestroy();
@@ -32,6 +33,18 @@ var app;
 
             PhoneListController.prototype.getOrderProp = function() {
                 return this.orderProp;
+            };
+
+            PhoneListController.prototype.getQuery = function() {
+                return this.query;
+            };
+
+            PhoneListController.prototype.setQuery = function(query) {
+                this.query = query;
+            };
+
+            PhoneListController.prototype.getImageUrl = function(imageUri) {
+                return imageUri != null && imageUri.length > 0 ? "src/app/res/" + imageUri : imageUri;
             };
 
             return PhoneListController;
