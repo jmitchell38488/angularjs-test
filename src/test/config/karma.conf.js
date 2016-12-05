@@ -38,13 +38,12 @@ module.exports = function (config) {
 		singleRun: false,
         frameworks: ['jasmine'],
 		browsers: [
-			'Chrome'
-            /*'Chrome',
-			'Firefox'*/
+			'Chrome',
+			'Firefox'
 		],
         plugins: [
             'karma-chrome-launcher',
-            /*'karma-firefox-launcher',*/
+            'karma-firefox-launcher',
             'karma-jasmine'
         ]
 	});
