@@ -27,7 +27,7 @@ describe('app.phones', function() {
             $q = _$q_;
             $rootScope = _$rootScope_;
             $httpBackend = _$httpBackend_;
-            $httpBackend.when('GET', 'src/app/res/phones/1.json').respond(phoneData);
+            $httpBackend.when('GET', 'res/phones/1.json').respond(phoneData);
 
             $routeParams.phoneId = 1;
             PhoneListService = _PhoneListService_;
@@ -52,11 +52,6 @@ describe('app.phones', function() {
         it('should fetch images in phone details with `$http`', function() {
             $httpBackend.flush();
             expect(ctrl.images).toEqual(phoneData.images);
-        });
-
-        it('should provide full uri for image path with `getImageUrl()`', function() {
-            $httpBackend.flush();
-            expect(ctrl.getImageUrl(phoneData.images[0])).toBe("src/app/res/" + phoneData.images[0]);
         });
 
         it('should provide current selected image with `getCurrentImage()`', function() {

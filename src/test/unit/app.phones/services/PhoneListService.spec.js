@@ -19,8 +19,8 @@ describe('PhoneListService', function() {
 
     beforeEach(inject(function(_$httpBackend_, _PhoneListService_) {
         $httpBackend = _$httpBackend_;
-        $httpBackend.when('GET', 'src/app/res/phones/phones.json').respond(phonesData);
-        $httpBackend.when('GET', 'src/app/res/phones/1.json').respond(phoneDetails);
+        $httpBackend.when('GET', 'res/phones/phones.json').respond(phonesData);
+        $httpBackend.when('GET', 'res/phones/1.json').respond(phoneDetails);
 
         PhoneListService = _PhoneListService_;
     }));
@@ -31,7 +31,7 @@ describe('PhoneListService', function() {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should fetch the phones data from `/src/app/res/phones/phones.json`', function() {
+    it('should fetch the phones data from `res/phones/phones.json`', function() {
         var phoneList = PhoneListService.query();
 
         expect(phoneList).toEqual([]);
@@ -40,7 +40,7 @@ describe('PhoneListService', function() {
         expect(phoneList).toEqual(phonesData);
     });
 
-    it('should fetch single phone data from `/src/app/res/phones/1.json`', function() {
+    it('should fetch single phone data from `res/phones/1.json`', function() {
         var details = PhoneListService.get({phoneId: '1'});
 
         expect(details).not.toBe(undefined);

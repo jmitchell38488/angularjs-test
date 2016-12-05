@@ -27,7 +27,7 @@ describe('app.phones', function() {
         beforeEach(inject(function($rootScope, $controller, _$httpBackend_) {
             scope = $rootScope.$new();
             $httpBackend = _$httpBackend_;
-            $httpBackend.when('GET', 'src/app/res/phones/phones.json').respond(phonesData);
+            $httpBackend.when('GET', 'res/phones/phones.json').respond(phonesData);
 
             ctrl = $controller('app.phones.PhoneListController', {$scope: scope});
         }));
