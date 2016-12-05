@@ -9,6 +9,11 @@ module.exports = function (config) {
 			'../bower_components/angular/angular.js',
 			'../bower_components/angular-route/angular-route.js',
 			'../bower_components/angular-mocks/angular-mocks.js',
+            '../bower_components/angular-resource/angular-resource.js',
+
+			// Register app first
+            'app/js/app.js',
+            'app/js/app.config.js',
 
             // Register modules first
             'app/js/components/**/module.js',
@@ -31,12 +36,13 @@ module.exports = function (config) {
 		singleRun: false,
         frameworks: ['jasmine'],
 		browsers: [
-			'Chrome',
-			'Firefox'
+			'Chrome'
+            /*'Chrome',
+			'Firefox'*/
 		],
         plugins: [
             'karma-chrome-launcher',
-            'karma-firefox-launcher',
+            /*'karma-firefox-launcher',*/
             'karma-jasmine'
         ]
 	});

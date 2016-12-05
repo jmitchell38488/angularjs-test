@@ -24,5 +24,10 @@
     "test-single-run": "karma start src/test/config/karma.conf.js --single-run",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update"
+  },
+  "dependencies": {
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2"
   }
 }
