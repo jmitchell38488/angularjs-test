@@ -1,12 +1,16 @@
-<p>Displaying phone details</p>
-<ul>
-    <li info="{{phoneDetailsCtrl.getPhoneDetails().name}}">
-        <span>{{phoneDetailsCtrl.getPhoneDetails().name}}</span>
-    </li>
-    <li info="{{phoneDetailsCtrl.getPhoneDetails().id}}">
-        <span>{{phoneDetailsCtrl.getPhoneDetails().id}}</span>
-    </li>
-    <li info="{{phoneDetailsCtrl.getPhoneDetails().description}}">
-        <span>{{phoneDetailsCtrl.getPhoneDetails().description}}</span>
+<div class="phone-images">
+    <img class="phone"
+         ng-src="{{ img }}"
+         ng-class="{selected: img === phoneDetailsCtrl.currentImage }"
+         ng-repeat="img in phoneDetailsCtrl.getImageList()" />
+</div>
+
+<h1>{{phoneDetailsCtrl.getPhoneDetails().name}}</h1>
+
+<p>{{$ctrl.phone.description}}</p>
+
+<ul class="phone-thumbs">
+    <li ng-repeat="img in phoneDetailsCtrl.getImageList()">
+        <img ng-src="{{ img }}" ng-click="phoneDetailsCtrl.setCurrentImage(img)" />
     </li>
 </ul>

@@ -36,10 +36,12 @@ h1 {
     margin-right: 3em;
     padding: 2em;
     width: 400px;
+    opacity: 0;
 }
 
 .phone:first-child {
     display: block;
+    opacity: 1;
 }
 
 .phone-images {

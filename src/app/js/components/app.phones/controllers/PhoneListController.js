@@ -35,12 +35,8 @@ var app;
                 return this.orderProp;
             };
 
-                PhoneListController.prototype.getQuery = function() {
+            PhoneListController.prototype.getQuery = function() {
                 return this.query;
-            };
-
-            PhoneListController.prototype.getImageUrl = function(imageUri) {
-                return imageUri != null && imageUri.length > 0 ? "src/app/res/" + imageUri : imageUri;
             };
 
             return PhoneListController;
@@ -58,7 +54,7 @@ var app;
                 bindToController: {
                     phone: '='
                 },
-                templateUrl: 'src/app/js/components/app.phones/partials/list.html'
+                templateUrl: 'js/components/app.phones/partials/list.html'
             };
         });
 

@@ -1,4 +1,8 @@
-*.DS_Store
-/.idea
-/node_modules
-/bower_components
+logs/*
+!.gitkeep
+node_modules/
+tmp
+.idea
+.DS_Store
+angular-phonecat-snapshots
+src/app/bower_components/

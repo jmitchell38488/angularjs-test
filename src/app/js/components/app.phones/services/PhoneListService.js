@@ -3,7 +3,7 @@
 angular.module('app.phones').factory('PhoneListService',[
     '$resource',
     function ($resource) {
-        return $resource('src/app/res/phones/:phoneId.json', {}, {
+        return $resource('res/phones/:phoneId.json', {}, {
             query: {
                 method: 'GET',
                 params: {
