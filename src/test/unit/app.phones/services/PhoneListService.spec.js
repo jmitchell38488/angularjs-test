@@ -5,9 +5,11 @@ describe('PhoneListService', function() {
     var PhoneListService;
 
     var phonesData = [];
-    phonesData.push({name: 'Nexus S',snippet: 'Fast just got faster with Nexus S.'});
-    phonesData.push({name: 'Motorola XOOM™ with Wi-Fi',snippet: 'The Next, Next Generation tablet.'});
-    phonesData.push({name: 'MOTOROLA XOOM™',snippet: 'The Next, Next Generation tablet.'});
+    phonesData.push({id: 0, name: 'Nexus S',snippet: 'Fast just got faster with Nexus S.'});
+    phonesData.push({id: 1, name: 'Motorola XOOM™ with Wi-Fi',snippet: 'The Next, Next Generation tablet.'});
+    phonesData.push({id: 2, name: 'MOTOROLA XOOM™',snippet: 'The Next, Next Generation tablet.'});
+
+    var phoneDetails = phonesData[1];
 
     beforeEach(module('app.phones'));
 
@@ -17,7 +19,8 @@ describe('PhoneListService', function() {
 
     beforeEach(inject(function(_$httpBackend_, _PhoneListService_) {
         $httpBackend = _$httpBackend_;
-        $httpBackend.expectGET('src/app/res/phones/phones.json').respond(phonesData);
+        $httpBackend.when('GET', 'src/app/res/phones/phones.json').respond(phonesData);
+        $httpBackend.when('GET', 'src/app/res/phones/1.json').respond(phoneDetails);
 
         PhoneListService = _PhoneListService_;
     }));
@@ -35,5 +38,15 @@ describe('PhoneListService', function() {
 
         $httpBackend.flush();
         expect(phoneList).toEqual(phonesData);
+    });
+
+    it('should fetch single phone data from `/src/app/res/phones/1.json`', function() {
+        var details = PhoneListService.get({phoneId: '1'});
+
+        expect(details).not.toBe(undefined);
+
+        $httpBackend.flush();
+
+        expect(details).toEqual(phoneDetails);
     });
 });
