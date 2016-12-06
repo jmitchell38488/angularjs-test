@@ -40,19 +40,5 @@ var app;
             return PhoneDetailsController;
         }());
         phones.PhoneDetailsController = PhoneDetailsController;
-        angular
-            .module('app.phones')
-            .directive('phoneDetails', function () {
-            return {
-                restrict: 'AE',
-                controller: [
-                    '$routeParams',
-                    'PhoneDetailsResource',
-                    PhoneDetailsController
-                ],
-                controllerAs: 'phoneDetailsCtrl',
-                templateUrl: 'js/components/app.phones/partials/details.html'
-            };
-        });
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));
