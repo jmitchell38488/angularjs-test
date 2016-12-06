@@ -60,10 +60,7 @@ namespace app.phones {
                     'PhoneDetailsResource',
                     PhoneDetailsController
                 ],
-                controllerAs: 'phoneDetailsCtrl',/*
-                bindToController: {
-                    phone: '='
-                },*/
+                controllerAs: 'phoneDetailsCtrl',
                 templateUrl: 'js/components/app.phones/partials/details.html'
             };
         });
