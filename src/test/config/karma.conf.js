@@ -33,17 +33,20 @@ module.exports = function (config) {
 
             // Test specs
             'test/unit/**/*.js',
+
+            // Exclude
+            {pattern: 'app/js/**/*.ts', included: false},
+            {pattern: 'app/js/**/*.js.map', included: false},
+            {pattern: 'test/**/*.ts', included: false}
 		],
 		autoWatch: true,
 		singleRun: false,
         frameworks: ['jasmine'],
 		browsers: [
-			'Chrome',
-			'Firefox'
+			'Chrome'
 		],
         plugins: [
             'karma-chrome-launcher',
-            'karma-firefox-launcher',
             'karma-jasmine'
         ]
 	});
