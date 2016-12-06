@@ -10,6 +10,7 @@ namespace app.phones {
                 controller: [
                     '$routeParams',
                     'PhoneDetailsResource',
+                    '$location',
                     PhoneDetailsController
                 ],
                 controllerAs: 'phoneDetailsCtrl',

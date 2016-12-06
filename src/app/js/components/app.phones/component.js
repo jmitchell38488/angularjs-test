@@ -9,8 +9,10 @@ var app;
             function (PhoneListResource) { return new phones.PhoneListController(PhoneListResource); }
         ]);
         module.controller('app.phones.PhoneDetailsController', [
-            '$routeParams', 'PhoneDetailsResource',
-            function ($routeParams, PhoneDetailsResource) { return new phones.PhoneDetailsController($routeParams, PhoneDetailsResource); }
+            '$routeParams', 'PhoneDetailsResource', '$location',
+            function ($routeParams, PhoneDetailsResource, $location) {
+                return new phones.PhoneDetailsController($routeParams, PhoneDetailsResource, $location);
+            }
         ]);
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));

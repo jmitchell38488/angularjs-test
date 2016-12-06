@@ -7,7 +7,6 @@ angular.module('app', [
 /// <reference path='_all.ts' />
 angular.module('app')
     .config(function ($routeProvider) {
-    'use strict';
 });
 /// <reference path='../../_all.ts' />
 var app;
@@ -103,8 +102,10 @@ var app;
             function (PhoneListResource) { return new phones.PhoneListController(PhoneListResource); }
         ]);
         module.controller('app.phones.PhoneDetailsController', [
-            '$routeParams', 'PhoneDetailsResource',
-            function ($routeParams, PhoneDetailsResource) { return new phones.PhoneDetailsController($routeParams, PhoneDetailsResource); }
+            '$routeParams', 'PhoneDetailsResource', '$location',
+            function ($routeParams, PhoneDetailsResource, $location) {
+                return new phones.PhoneDetailsController($routeParams, PhoneDetailsResource, $location);
+            }
         ]);
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));
@@ -130,9 +131,8 @@ var app;
             '$resource',
             function ($resource) {
                 return $resource('/res/phones/:id.json', { id: '@id' }, {
-                    query: {
-                        method: 'GET',
-                        isArray: true
+                    get: {
+                        method: 'GET'
                     }
                 });
             }
@@ -145,19 +145,27 @@ var app;
     var phones;
     (function (phones) {
         var PhoneDetailsController = (function () {
-            function PhoneDetailsController($routeParams, IPhoneDetailsResource) {
+            function PhoneDetailsController($routeParams, IPhoneDetailsResource, $location) {
                 this.$routeParams = $routeParams;
                 this.IPhoneDetailsResource = IPhoneDetailsResource;
+                this.$location = $location;
                 this.phoneId = $routeParams['phoneId'];
                 this.currentImage = '';
                 this.phoneDetails = null;
-                this.loadPhoneDetails(IPhoneDetailsResource);
+                this.loadPhoneDetails(IPhoneDetailsResource, $location);
             }
-            PhoneDetailsController.prototype.loadPhoneDetails = function (IPhoneDetailsResource) {
+            PhoneDetailsController.prototype.loadPhoneDetails = function (IPhoneDetailsResource, location) {
                 var _this = this;
                 IPhoneDetailsResource.get({ id: this.phoneId }, function (phoneDetails) {
+                    // Redirect if the data was invalid
+                    if (phoneDetails == null || phoneDetails == undefined) {
+                        location.url('/phones');
+                    }
                     _this.loadPhoneImages(phoneDetails);
                     _this.phoneDetails = phoneDetails;
+                }, function (phoneDetails) {
+                    // Any error just redirect back to the list page
+                    location.url('/phones');
                 });
             };
             PhoneDetailsController.prototype.loadPhoneImages = function (phoneDetails) {
@@ -248,6 +256,7 @@ var app;
                 controller: [
                     '$routeParams',
                     'PhoneDetailsResource',
+                    '$location',
                     phones.PhoneDetailsController
                 ],
                 controllerAs: 'phoneDetailsCtrl',

@@ -10,19 +10,28 @@ namespace app.phones {
         public phoneId: number;
 
         constructor(private $routeParams: ng.route.IRouteParamsService,
-                    private IPhoneDetailsResource: IPhoneDetailsResource) {
+                    private IPhoneDetailsResource: IPhoneDetailsResource,
+                    private $location: ng.ILocationService) {
             this.phoneId = $routeParams['phoneId'];
             this.currentImage = '';
             this.phoneDetails = null;
 
-            this.loadPhoneDetails(IPhoneDetailsResource);
+            this.loadPhoneDetails(IPhoneDetailsResource, $location);
         }
 
-        private loadPhoneDetails(IPhoneDetailsResource: IPhoneDetailsResource) {
+        private loadPhoneDetails(IPhoneDetailsResource: IPhoneDetailsResource, location: ng.ILocationService) {
             IPhoneDetailsResource.get({id: this.phoneId}, (phoneDetails) => {
+                // Redirect if the data was invalid
+                if (phoneDetails == null || phoneDetails == undefined) {
+                    location.url('/phones');
+                }
+
                 this.loadPhoneImages(phoneDetails);
                 this.phoneDetails = phoneDetails;
-            })
+            }, (phoneDetails) => {
+                // Any error just redirect back to the list page
+                location.url('/phones');
+            });
         }
 
         private loadPhoneImages(phoneDetails: IPhoneDetails) {

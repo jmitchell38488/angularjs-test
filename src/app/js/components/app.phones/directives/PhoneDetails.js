@@ -11,6 +11,7 @@ var app;
                 controller: [
                     '$routeParams',
                     'PhoneDetailsResource',
+                    '$location',
                     phones.PhoneDetailsController
                 ],
                 controllerAs: 'phoneDetailsCtrl',

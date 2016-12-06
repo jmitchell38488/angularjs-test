@@ -10,8 +10,9 @@ namespace app.phones {
     ]);
 
     module.controller('app.phones.PhoneDetailsController', [
-        '$routeParams', 'PhoneDetailsResource',
-        ($routeParams, PhoneDetailsResource) => new PhoneDetailsController($routeParams, PhoneDetailsResource)
+        '$routeParams', 'PhoneDetailsResource', '$location',
+        ($routeParams, PhoneDetailsResource, $location) =>
+            new PhoneDetailsController($routeParams, PhoneDetailsResource, $location)
     ]);
 
 }
