@@ -1,22 +1,16 @@
-'use strict';
+/// <reference path='../../_all.ts' />
 var app;
-(function(app) {
-
+(function (app) {
     var phones;
-    (function(phones) {
+    (function (phones) {
         var module = angular.module('app.phones');
-
         module.controller('app.phones.PhoneListController', [
-            '$scope', 'PhoneListService',
-            function($scope, PhoneListService) {
-                return new phones.PhoneListController($scope, PhoneListService);
-            }]);
-
+            'PhoneListResource',
+            function (PhoneListResource) { return new phones.PhoneListController(PhoneListResource); }
+        ]);
         module.controller('app.phones.PhoneDetailsController', [
-            '$routeParams', 'PhoneListService',
-            function($routeParams, PhoneListService) {
-                return new phones.PhoneDetailsController($routeParams, PhoneListService);
-            }]);
-
+            '$routeParams', 'PhoneDetailsResource',
+            function ($routeParams, PhoneDetailsResource) { return new phones.PhoneDetailsController($routeParams, PhoneDetailsResource); }
+        ]);
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));

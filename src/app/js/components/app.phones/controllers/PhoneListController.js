@@ -1,53 +1,37 @@
-'use strict';
-
+/// <reference path='../../../_all.ts' />
 var app;
-(function(app) {
-
+(function (app) {
     var phones;
-    (function(phones) {
-        var PhoneListController = (function() {
-            function PhoneListController($scope, PhoneListService) {
-                var _this = this;
-                _this.phones = [];
-                _this.orderProp = 'age';
-                _this.query = "";
-
-                $scope.$on('$destroy', function () {
-                    return _this._onDestroy();
-                });
-
-                _this._createPhonesList(PhoneListService);
+    (function (phones) {
+        var PhoneListController = (function () {
+            function PhoneListController(PhoneListResource) {
+                this.PhoneListResource = PhoneListResource;
+                this.orderProp = 'age';
+                this.query = '';
+                this.createPhonesList(PhoneListResource);
             }
-
-            PhoneListController.prototype._createPhonesList = function(PhoneListService) {
-                this.phones = PhoneListService.query();
+            PhoneListController.prototype.createPhonesList = function (PhoneListResource) {
+                this.phones = PhoneListResource.query();
             };
-
-            PhoneListController.prototype._onDestroy = function() {
-                this.phones = [];
-            };
-
-            PhoneListController.prototype.getPhoneList = function() {
+            PhoneListController.prototype.getPhoneList = function () {
                 return this.phones;
             };
-
-            PhoneListController.prototype.getOrderProp = function() {
+            PhoneListController.prototype.getOrderProp = function () {
                 return this.orderProp;
             };
-
-            PhoneListController.prototype.getQuery = function() {
+            PhoneListController.prototype.getQuery = function () {
                 return this.query;
             };
-
             return PhoneListController;
-        })();
-
-        angular.module('app.phones').directive('phoneList', function() {
+        }());
+        phones.PhoneListController = PhoneListController;
+        angular
+            .module('app.phones')
+            .directive('phoneList', function () {
             return {
                 restrict: 'AE',
                 controller: [
-                    '$scope',
-                    'PhoneListService',
+                    'PhoneListResource',
                     PhoneListController
                 ],
                 controllerAs: 'phoneListCtrl',
@@ -57,7 +41,5 @@ var app;
                 templateUrl: 'js/components/app.phones/partials/list.html'
             };
         });
-
-        phones.PhoneListController = PhoneListController;
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));

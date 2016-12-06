@@ -1,76 +1,58 @@
-'use strict';
-
+/// <reference path='../../../_all.ts' />
 var app;
-(function(app) {
-
+(function (app) {
     var phones;
-    (function(phones) {
-        var PhoneDetailsController = (function() {
-            function PhoneDetailsController($routeParams, PhoneListService) {
-                var _this = this;
-                _this.currentImage = '';
-                _this.images = [];
-                _this.phoneDetails = {};
-                _this.phoneId = $routeParams.phoneId;
-
-                _this._loadPhoneDetails = function ($routeParams, PhoneListService) {
-                    var _this = this;
-                    PhoneListService.get({phoneId: $routeParams.phoneId}, function (phoneDetails) {
-                        _this._loadPhoneImages(phoneDetails.images);
-                        _this.phoneDetails = phoneDetails;
-                    });
-                };
-
-                _this._loadPhoneImages = function (images/*[]*/) {
-                    if (angular.isArray(images)) {
-                        this.images = images;
-                        this.setCurrentImage(images[0]);
-                    }
-                };
-
-                _this.getPhoneDetails = function () {
-                    return this.phoneDetails;
-                };
-
-                _this.getImageList = function () {
-                    return this.images;
-                };
-
-                _this.getCurrentImage = function () {
-                    return this.currentImage;
-                };
-
-                _this.getImageUrl = function (imageUri) {
-                    return imageUri != null && imageUri.length > 0 ? "src/app/res/" + imageUri : imageUri;
-                };
-
-                _this.setCurrentImage = function (imageUri) {
-                    this.currentImage = imageUri;
-                };
-
-                // Load the phone details
-                _this._loadPhoneDetails($routeParams, PhoneListService);
+    (function (phones) {
+        var PhoneDetailsController = (function () {
+            function PhoneDetailsController($routeParams, IPhoneDetailsResource) {
+                this.$routeParams = $routeParams;
+                this.IPhoneDetailsResource = IPhoneDetailsResource;
+                this.phoneId = $routeParams['phoneId'];
+                this.currentImage = '';
+                this.phoneDetails = null;
+                this.loadPhoneDetails(IPhoneDetailsResource);
             }
-
+            PhoneDetailsController.prototype.loadPhoneDetails = function (IPhoneDetailsResource) {
+                var _this = this;
+                IPhoneDetailsResource.get({ id: this.phoneId }, function (phoneDetails) {
+                    _this.loadPhoneImages(phoneDetails);
+                    _this.phoneDetails = phoneDetails;
+                });
+            };
+            PhoneDetailsController.prototype.loadPhoneImages = function (phoneDetails) {
+                if (angular.isArray(phoneDetails.images)) {
+                    this.images = phoneDetails.images;
+                    this.setCurrentImage(this.images[0]);
+                }
+            };
+            PhoneDetailsController.prototype.setCurrentImage = function (image) {
+                this.currentImage = image;
+            };
+            PhoneDetailsController.prototype.getPhoneDetails = function () {
+                return this.phoneDetails;
+            };
+            PhoneDetailsController.prototype.getImageList = function () {
+                return this.images;
+            };
+            PhoneDetailsController.prototype.getCurrentImage = function () {
+                return this.currentImage;
+            };
             return PhoneDetailsController;
-        })();
-
-        angular.module('app.phones').directive('phoneDetails', function() {
+        }());
+        phones.PhoneDetailsController = PhoneDetailsController;
+        angular
+            .module('app.phones')
+            .directive('phoneDetails', function () {
             return {
                 restrict: 'AE',
                 controller: [
                     '$routeParams',
-                    'PhoneListService',
+                    'PhoneDetailsResource',
                     PhoneDetailsController
                 ],
                 controllerAs: 'phoneDetailsCtrl',
-                /*bindToController: {
-                    phone: '='
-                },*/
                 templateUrl: 'js/components/app.phones/partials/details.html'
             };
         });
-
-        phones.PhoneDetailsController = PhoneDetailsController;
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));

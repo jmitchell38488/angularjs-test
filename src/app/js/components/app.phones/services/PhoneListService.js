@@ -1,16 +1,31 @@
-'use strict';
-
-angular.module('app.phones').factory('PhoneListService',[
-    '$resource',
-    function ($resource) {
-        return $resource('res/phones/:phoneId.json', {}, {
-            query: {
-                method: 'GET',
-                params: {
-                    phoneId: 'phones'
-                },
-                isArray: true
+/// <reference path='../../../_all.ts' />
+var app;
+(function (app) {
+    var phones;
+    (function (phones) {
+        angular
+            .module('app.phones')
+            .factory('PhoneListResource', [
+            '$resource',
+            function ($resource) {
+                return $resource('/res/phones/phones.json', {}, {
+                    query: {
+                        method: 'GET',
+                        isArray: true
+                    }
+                });
             }
-        });
-    }
-]);
+        ])
+            .factory('PhoneDetailsResource', [
+            '$resource',
+            function ($resource) {
+                return $resource('/res/phones/:id.json', { id: '@id' }, {
+                    query: {
+                        method: 'GET',
+                        isArray: true
+                    }
+                });
+            }
+        ]);
+    })(phones = app.phones || (app.phones = {}));
+})(app || (app = {}));
