@@ -8,6 +8,10 @@ var app;
             '$resource',
             function ($resource) {
                 return $resource('/res/phones/phones.json', {}, {
+                    get: {
+                        method: 'GET',
+                        isArray: true
+                    },
                     query: {
                         method: 'GET',
                         isArray: true
@@ -19,7 +23,7 @@ var app;
             '$resource',
             function ($resource) {
                 return $resource('/res/phones/:id.json', { id: '@id' }, {
-                    query: {
+                    get: {
                         method: 'GET',
                         isArray: true
                     }
