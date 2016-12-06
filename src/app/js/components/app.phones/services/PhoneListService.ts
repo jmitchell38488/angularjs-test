@@ -8,10 +8,6 @@ namespace app.phones {
             '$resource',
             ($resource: ng.resource.IResourceService) : IPhoneListResource => {
                 return <IPhoneListResource> $resource('/res/phones/phones.json', {}, {
-                    get: {
-                        method: 'GET',
-                        isArray: true
-                    },
                     query: {
                         method: 'GET',
                         isArray: true
@@ -25,8 +21,7 @@ namespace app.phones {
             ($resource: ng.resource.IResourceService) : IPhoneDetailsResource => {
                 return <IPhoneDetailsResource> $resource('/res/phones/:id.json', {id: '@id'}, {
                     get: {
-                        method: 'GET',
-                        isArray: true
+                        method: 'GET'
                     }
                 })
             }
