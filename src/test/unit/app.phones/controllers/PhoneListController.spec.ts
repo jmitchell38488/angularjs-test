@@ -1,8 +1,11 @@
 namespace app.phones {
 
-    describe('Testing Service: app.phones.PhoneListService', () => {
+    describe('Testing Controller: app.phones.PhoneListController', () => {
 
         var $httpBackend;
+        var $filterQuery;
+        var $filterOrder;
+        var ctrl;
         var phoneListResource: IPhoneListResource;
         var phoneDetailsResource: IPhoneDetailsResource;
 
@@ -82,13 +85,18 @@ namespace app.phones {
             jasmine.addCustomEqualityTester(angular.equals);
             angular.mock.module('app.phones');
 
-            inject((_$httpBackend_, _PhoneListResource_, _PhoneDetailsResource_) => {
+            inject((_$httpBackend_, _PhoneListResource_, _PhoneDetailsResource_, $injector) => {
+                $filterQuery = $injector.get('$filter')('filter');
+                $filterOrder = $injector.get('$filter')('orderBy');
+
                 $httpBackend = _$httpBackend_;
                 $httpBackend.when('GET', '/res/phones/phones.json').respond(phonesData);
                 $httpBackend.when('GET', '/res/phones/test123.json').respond(phoneDetails);
 
                 phoneListResource = _PhoneListResource_;
                 phoneDetailsResource = _PhoneDetailsResource_;
+
+                ctrl = $injector.get('$controller')('app.phones.PhoneListController', {PhoneListResource: phoneListResource});
             });
         });
 
@@ -97,24 +105,70 @@ namespace app.phones {
             $httpBackend.verifyNoOutstandingRequest();
         });
 
-        it('should fetch the phones data from `res/phones/phones.json`', () => {
-            var phoneList = phoneListResource.query();
-            expect(phoneList).toEqual([]);
+        it('should create a `phones` property with 3 phones fetched with `$http`', () => {
+            expect(ctrl.phones).toEqual([]);
 
             $httpBackend.flush();
-            expect(phoneList).toEqual(phonesData);
+            expect(ctrl.phones).toEqual(phonesData);
         });
 
-        it('should fetch single phone data from `res/phones/test123.json`', () => {
-            var details = phoneDetailsResource.get({id: 'test123'});
+        it('should set a default value for the `orderProp` property', () => {
+            $httpBackend.flush();
+            expect(ctrl.orderProp).toBe('age');
+        });
 
-            expect(details).not.toBe(undefined);
+        it('should set a default value for the `query` property', () => {
+            $httpBackend.flush();
+            expect(ctrl.query).toBe('');
+        });
+
+        it('should expect `getPhoneList()` to return 3 phones fetched with `$http`', () => {
+            expect(ctrl.getPhoneList()).toEqual([]);
 
             $httpBackend.flush();
-
-            expect(details).toEqual(phoneDetails);
+            expect(ctrl.getPhoneList()).toEqual(phonesData);
         });
 
+        it('should expect `getOrderProp()` to return the value for the `orderProp` property', () => {
+            $httpBackend.flush();
+            expect(ctrl.getOrderProp()).toBe('age');
+        });
+
+        it('should expect `getQuery()` to return value of `query`', () => {
+            $httpBackend.flush();
+
+            var query = 'XOOM';
+            ctrl.query = query;
+            expect(ctrl.getQuery()).toBe(query);
+        });
+
+        it('should expect `query` to filter phone list, return 2', () => {
+            $httpBackend.flush();
+
+            var query = 'XOOM';
+            var list = [];
+            var phones = [];
+
+            angular.copy(phonesData, list);
+            angular.copy(phonesData, phones);
+
+            phones = phones.slice(1);
+            expect($filterQuery(list, query)).toEqual(phones);
+        });
+
+        it('should expect `orderProp` to order phone list', () => {
+            $httpBackend.flush();
+            var order = 'age';
+            var list = [];
+            var phones = [];
+
+            angular.copy(phonesData, list);
+            angular.copy(phonesData, phones);
+
+            phones.reverse();
+
+            expect($filterOrder(list, order)).toEqual(phones);
+        });
     });
 
 }
