@@ -2,9 +2,9 @@
 
 namespace app.phones {
 
-    angular
-        .module('app.phones')
-        .factory('PhoneListResource', [
+    var module: angular.IModule = angular.module('app.phones');
+
+    module.factory('PhoneListResource', [
             '$resource',
             ($resource: ng.resource.IResourceService) : IPhoneListResource => {
                 return <IPhoneListResource> $resource('/res/phones/phones.json', {}, {
@@ -14,8 +14,9 @@ namespace app.phones {
                     }
                 });
             }
-        ])
-        .factory('PhoneDetailsResource', [
+        ]);
+
+    module.factory('PhoneDetailsResource', [
             '$resource',
             ($resource: ng.resource.IResourceService) : IPhoneDetailsResource => {
                 return <IPhoneDetailsResource> $resource('/res/phones/:id.json', {id: '@id'}, {

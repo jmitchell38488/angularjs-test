@@ -1,20 +1,27 @@
 /// <reference path='../../_all.ts' />
 
-angular.module('app.phones', ['ngResource', 'ngRoute', 'ngAnimate'])
-    .config([
+namespace app.phones {
+
+    var module: angular.IModule = angular.module('app.phones', [
+        'ngResource',
+        'ngRoute',
+        'ngAnimate'
+    ]);
+
+    module.config([
         '$locationProvider', '$routeProvider',
-        function ($locationProvider, $routeProvider) {
+        ($locationProvider: ng.ILocationProvider, $routeProvider: ng.route.IRouteProvider) => {
             $locationProvider.hashPrefix('!');
 
             $routeProvider
                 .when('/phones', {
-                    template: function() {
+                    template: () => {
                         return '<phone-list></phone-list>'
                     },
                     controller: 'app.phones.PhoneListController'
                 })
                 .when('/phones/:phoneId', {
-                    template: function() {
+                    template: () => {
                         return '<phone-details></phone-details>'
                     },
                     controller: 'app.phones.PhoneDetailsController'
@@ -23,19 +30,17 @@ angular.module('app.phones', ['ngResource', 'ngRoute', 'ngAnimate'])
                     redirectTo: '/phones'
                 });
         }
-    ])
-    .filter('checkmark', function() {
-        return function(input) {
+    ]);
+
+    module.filter('checkmark', () => {
+        return (input: string) => {
             return input ? '\u2713' : '\u2718';
         };
-    })
-    .animation('.phone', function phoneAnimationFactory() {
-        return {
-            addClass: animateIn,
-            removeClass: animateOut
-        };
+    });
 
-        function animateIn(element, className, done) {
+    module.animation('.phone', function phoneAnimationFactory(): ng.animate.IAnimateCallbackObject {
+
+        function animateIn(element: JQuery, className: string, done: Function): any {
             if (className !== 'selected') {
                 return;
             }
@@ -50,14 +55,14 @@ angular.module('app.phones', ['ngResource', 'ngRoute', 'ngAnimate'])
                 opacity: 1
             }, 300, done);
 
-            return function animateInEnd(wasCanceled) {
+            return (wasCanceled: boolean) => {
                 if (wasCanceled) {
                     element.stop();
                 }
             };
         }
 
-        function animateOut(element, className, done) {
+        function animateOut(element: JQuery, className: string, done: Function): any {
             if (className !== 'selected') {
                 return;
             }
@@ -71,10 +76,18 @@ angular.module('app.phones', ['ngResource', 'ngRoute', 'ngAnimate'])
                 opacity: 0
             }, 300, done);
 
-            return function animateOutEnd(wasCanceled) {
+            return (wasCanceled: boolean) => {
                 if (wasCanceled) {
                     element.stop();
                 }
             };
         }
+
+        return {
+            addClass: animateIn,
+            removeClass: animateOut
+        };
+
     });
+
+};

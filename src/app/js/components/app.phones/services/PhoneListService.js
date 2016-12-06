@@ -3,9 +3,8 @@ var app;
 (function (app) {
     var phones;
     (function (phones) {
-        angular
-            .module('app.phones')
-            .factory('PhoneListResource', [
+        var module = angular.module('app.phones');
+        module.factory('PhoneListResource', [
             '$resource',
             function ($resource) {
                 return $resource('/res/phones/phones.json', {}, {
@@ -15,8 +14,8 @@ var app;
                     }
                 });
             }
-        ])
-            .factory('PhoneDetailsResource', [
+        ]);
+        module.factory('PhoneDetailsResource', [
             '$resource',
             function ($resource) {
                 return $resource('/res/phones/:id.json', { id: '@id' }, {

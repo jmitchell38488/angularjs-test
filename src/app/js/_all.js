@@ -11,3 +11,5 @@
 /// <reference path='components/app.phones/services/PhoneListService.ts' />
 /// <reference path='components/app.phones/controllers/PhoneDetailsController.ts' />
 /// <reference path='components/app.phones/controllers/PhoneListController.ts' />
+/// <reference path='components/app.phones/directives/PhoneList.ts' />
+/// <reference path='components/app.phones/directives/PhoneDetails.ts' />
