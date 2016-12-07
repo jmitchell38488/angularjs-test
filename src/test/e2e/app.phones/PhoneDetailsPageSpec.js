@@ -1,4 +1,4 @@
-describe('Angular JS Test App E2E: Phone List Page', function () {
+describe('E2E: Phone List Page', function () {
     beforeAll(function () {
         browser.ignoreSynchronization = false;
         browser.driver.manage().window().setSize(1280, 1024);

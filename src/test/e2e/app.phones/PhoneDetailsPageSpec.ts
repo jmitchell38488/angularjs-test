@@ -1,4 +1,4 @@
-describe('Angular JS Test App E2E: Phone List Page', () => {
+describe('E2E: Phone List Page', () => {
 
     beforeAll(() => {
         browser.ignoreSynchronization = false;
