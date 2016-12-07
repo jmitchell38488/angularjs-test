@@ -1,4 +1,4 @@
-describe('Angular JS Test App E2E: Phone List Page', function () {
+describe('E2E: Phone List Page', function () {
     beforeAll(function () {
         browser.ignoreSynchronization = false;
         browser.driver.manage().window().setSize(1280, 1024);
@@ -17,7 +17,7 @@ describe('Angular JS Test App E2E: Phone List Page', function () {
                 browser.get('index.html#!/phones');
             });
             it('WILL filter the phone list by the users input', function () {
-                var phoneList = element.all(by.repeater('phone in phoneListCtrl.getPhoneList()'));
+                var phoneList = element.all(by.repeater('phone in phoneListCtrl.phoneList'));
                 var query = element(by.model('phoneListCtrl.query'));
                 expect(phoneList.count()).toBe(20);
                 query.sendKeys('nexus');
@@ -35,7 +35,7 @@ describe('Angular JS Test App E2E: Phone List Page', function () {
                 var queryField = element(by.model('phoneListCtrl.query'));
                 var orderSelect = element(by.model('phoneListCtrl.orderProp'));
                 var nameOption = orderSelect.element(by.css('option[value="name"]'));
-                var phoneNameColumn = element.all(by.repeater('phone in phoneListCtrl.getPhoneList()').column('phone.name'));
+                var phoneNameColumn = element.all(by.repeater('phone in phoneListCtrl.phoneList').column('phone.name'));
                 function getNames() {
                     return phoneNameColumn.map(function (elem) {
                         return elem.getText();

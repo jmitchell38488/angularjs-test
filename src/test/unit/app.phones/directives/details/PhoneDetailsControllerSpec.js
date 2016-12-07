@@ -2,7 +2,7 @@ var app;
 (function (app) {
     var phones;
     (function (phones) {
-        describe('Testing Controller: app.phones.PhoneDetailsController', function () {
+        describe('app.phones.PhoneDetailsController', function () {
             var $httpBackend;
             var ctrl;
             var phoneDetailsResource;
@@ -77,42 +77,42 @@ var app;
                 inject(function (_$httpBackend_, _PhoneDetailsResource_, $injector, $routeParams) {
                     $httpBackend = _$httpBackend_;
                     $httpBackend.when('GET', '/res/phones/test123.json').respond(phoneDetails);
-                    phoneDetailsResource = _PhoneDetailsResource_;
                     $routeParams.phoneId = 'test123';
+                    phoneDetailsResource = _PhoneDetailsResource_;
                     ctrl = $injector.get('$controller')('app.phones.PhoneDetailsController', { $routeParams: $routeParams, IPhoneDetailsResource: phoneDetailsResource });
                 });
             });
-            afterEach(function () {
-                $httpBackend.verifyNoOutstandingExpectation();
-                $httpBackend.verifyNoOutstandingRequest();
+            describe('WHEN I instantiate a new controller', function () {
+                afterEach(function () {
+                    $httpBackend.verifyNoOutstandingExpectation();
+                    $httpBackend.verifyNoOutstandingRequest();
+                });
+                it('WILL fetch phone details with `$http`', function () {
+                    // Returns a promise
+                    var details = phoneDetailsResource.get({ id: 'test123' });
+                    expect(details).toBeDefined();
+                    $httpBackend.flush();
+                    expect(ctrl.phoneDetails).toEqual(phoneDetails);
+                });
+                it('WILL set `imageList` to be the images fetched from `$http`', function () {
+                    $httpBackend.flush();
+                    expect(ctrl.imageList).toEqual(phoneDetails.images);
+                });
+                it('WILL set `currentImage` to be the first image in the imageList property', function () {
+                    $httpBackend.flush();
+                    expect(ctrl.currentImage).toBe(phoneDetails.images[0]);
+                });
             });
-            it('should fetch phone details with `$http`', function () {
-                // Returns a promise
-                var details = phoneDetailsResource.get({ id: 'test123' });
-                expect(details).toBeDefined();
-                $httpBackend.flush();
-                expect(ctrl.phoneDetails).toEqual(phoneDetails);
-            });
-            it('should fetch images in phone details with `$http`', function () {
-                $httpBackend.flush();
-                expect(ctrl.images).toEqual(phoneDetails.images);
-            });
-            it('should provide current selected image with `getCurrentImage()`', function () {
-                $httpBackend.flush();
-                expect(ctrl.getCurrentImage()).toBe(phoneDetails.images[0]);
-            });
-            it('should return full image list with `getImageList()`', function () {
-                $httpBackend.flush();
-                expect(ctrl.getImageList()).toEqual(phoneDetails.images);
-            });
-            it('should fetch phone details with `getPhoneDetails`', function () {
-                $httpBackend.flush();
-                expect(ctrl.getPhoneDetails()).toEqual(phoneDetails);
-            });
-            it('should update current image with new image', function () {
-                $httpBackend.flush();
-                ctrl.setCurrentImage(phoneDetails.images[1]);
-                expect(ctrl.getCurrentImage()).toBe(phoneDetails.images[1]);
+            describe('WHEN I change the current image', function () {
+                afterEach(function () {
+                    $httpBackend.verifyNoOutstandingExpectation();
+                    $httpBackend.verifyNoOutstandingRequest();
+                });
+                it('WILL update the current image to the new image', function () {
+                    $httpBackend.flush();
+                    ctrl.currentImage = phoneDetails.images[1];
+                    expect(ctrl.currentImage).toBe(phoneDetails.images[1]);
+                });
             });
         });
     })(phones = app.phones || (app.phones = {}));

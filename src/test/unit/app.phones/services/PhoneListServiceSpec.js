@@ -2,7 +2,7 @@ var app;
 (function (app) {
     var phones;
     (function (phones) {
-        describe('Testing Service: app.phones.PhoneListService', function () {
+        describe('app.phones.PhoneListService', function () {
             var $httpBackend;
             var phoneListResource;
             var phoneDetailsResource;
@@ -91,17 +91,21 @@ var app;
                 $httpBackend.verifyNoOutstandingExpectation();
                 $httpBackend.verifyNoOutstandingRequest();
             });
-            it('should fetch the phones data from `res/phones/phones.json`', function () {
-                var phoneList = phoneListResource.query();
-                expect(phoneList).toEqual([]);
-                $httpBackend.flush();
-                expect(phoneList).toEqual(phonesData);
+            describe('WHEN I request phone list data from `res/phones/phones.json`', function () {
+                it('WILL return valid phone data', function () {
+                    var phoneList = phoneListResource.query();
+                    expect(phoneList).toEqual([]);
+                    $httpBackend.flush();
+                    expect(phoneList).toEqual(phonesData);
+                });
             });
-            it('should fetch single phone data from `res/phones/test123.json`', function () {
-                var details = phoneDetailsResource.get({ id: 'test123' });
-                expect(details).not.toBe(undefined);
-                $httpBackend.flush();
-                expect(details).toEqual(phoneDetails);
+            describe('WHEN I request phone detail data from`res/phones/test123.json`', function () {
+                it('WILL return valid phone detail data', function () {
+                    var details = phoneDetailsResource.get({ id: 'test123' });
+                    expect(details).not.toBe(undefined);
+                    $httpBackend.flush();
+                    expect(details).toEqual(phoneDetails);
+                });
             });
         });
     })(phones = app.phones || (app.phones = {}));

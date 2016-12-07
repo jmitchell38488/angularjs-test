@@ -1,0 +1,119 @@
+<p><a href="#!/phones">&lt; Back to list</a></p>
+<div class="phone-images">
+    <img class="phone"
+         ng-src="{{ img }}"
+         ng-class="{selected: img == phoneDetailsCtrl.currentImage }"
+         ng-repeat="img in phoneDetailsCtrl.imageList" />
+</div>
+
+<h1>{{phoneDetailsCtrl.phoneDetails.name}}</h1>
+
+<p>{{phoneDetailsCtrl.phoneDetails.description}}</p>
+
+<ul class="phone-thumbs">
+    <li ng-repeat="img in phoneDetailsCtrl.imageList">
+        <img ng-src="{{ img }}" ng-click="phoneDetailsCtrl.currentImage = img" />
+    </li>
+</ul>
+
+<ul class="specs">
+    <li>
+        <span>Availability and Networks</span>
+        <dl>
+            <dt>Availability</dt>
+            <dd ng-repeat="availability in phoneDetailsCtrl.phoneDetails.availability">{{availability}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Battery</span>
+        <dl>
+            <dt>Type</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.battery.type}}</dd>
+            <dt>Talk Time</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.battery.talkTime}}</dd>
+            <dt>Standby time (max)</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.battery.standbyTime}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Storage and Memory</span>
+        <dl>
+            <dt>RAM</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.storage.ram}}</dd>
+            <dt>Internal Storage</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.storage.flash}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Connectivity</span>
+        <dl>
+            <dt>Network Support</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.connectivity.cell}}</dd>
+            <dt>WiFi</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.connectivity.wifi}}</dd>
+            <dt>Bluetooth</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.connectivity.bluetooth}}</dd>
+            <dt>Infrared</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.connectivity.infrared | checkmark}}</dd>
+            <dt>GPS</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.connectivity.gps | checkmark}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Android</span>
+        <dl>
+            <dt>OS Version</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.android.os}}</dd>
+            <dt>UI</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.android.ui}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Size and Weight</span>
+        <dl>
+            <dt>Dimensions</dt>
+            <dd ng-repeat="dim in phoneDetailsCtrl.phoneDetails.sizeAndWeight.dimensions">{{dim}}</dd>
+            <dt>Weight</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.sizeAndWeight.weight}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Display</span>
+        <dl>
+            <dt>Screen size</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.display.screenSize}}</dd>
+            <dt>Screen resolution</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.display.screenResolution}}</dd>
+            <dt>Touch screen</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.display.touchScreen | checkmark}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Hardware</span>
+        <dl>
+            <dt>CPU</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.hardware.cpu}}</dd>
+            <dt>USB</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.hardware.usb}}</dd>
+            <dt>Audio / headphone jack</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.hardware.audioJack}}</dd>
+            <dt>FM Radio</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.hardware.fmRadio | checkmark}}</dd>
+            <dt>Accelerometer</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.hardware.accelerometer | checkmark}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Camera</span>
+        <dl>
+            <dt>Primary</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.camera.primary}}</dd>
+            <dt>Features</dt>
+            <dd>{{phoneDetailsCtrl.phoneDetails.camera.features.join(', ')}}</dd>
+        </dl>
+    </li>
+    <li>
+        <span>Additional Features</span>
+        <dd>{{phoneDetailsCtrl.phoneDetails.additionalFeatures}}</dd>
+    </li>
+</ul>
