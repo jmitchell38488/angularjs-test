@@ -15,7 +15,6 @@ module.exports = function (config) {
 
 			// Register app first
             'app/js/app.js',
-            'app/js/app.config.js',
 
             // Register modules first
             'app/js/components/**/module.js',

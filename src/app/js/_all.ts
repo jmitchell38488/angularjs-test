@@ -4,7 +4,6 @@
 /// <reference path='../../../typings/angularjs/angular-resource.d.ts' />
 /// <reference path='../../../typings/angularjs/angular-animate.d.ts' />
 /// <reference path='app.ts' />
-/// <reference path='app.config.ts' />
 /// <reference path='components/app.phones/module.ts' />
 /// <reference path='components/app.phones/component.ts' />
 /// <reference path='components/app.phones/domain/PhoneModel.ts' />
