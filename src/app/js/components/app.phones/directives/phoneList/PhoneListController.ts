@@ -8,14 +8,15 @@ namespace app.phones {
             return {
                 restrict: 'AE',
                 controller: [
-                    'PhoneListResource',
+                    '$rootScope',
+                    'app.phones.PhoneRefDataService',
                     PhoneListController
                 ],
                 controllerAs: 'phoneListCtrl',
                 bindToController: {
                     phone: '='
                 },
-                templateUrl: 'js/components/app.phones/directives/list/template.html'
+                templateUrl: 'js/components/app.phones/directives/phoneList/template.html'
             };
         });
 
@@ -23,22 +24,21 @@ namespace app.phones {
 
     export class PhoneListController {
 
-        public phoneList : IResourceArray<IPhoneListDef>;
+        public phoneList: IPhoneList[];
         public query : string;
         public orderProp: string;
 
-        constructor(phoneListResource : IPhoneListResource) {
+        constructor($rootScope: ng.IRootScopeService, phoneDataService : IPhoneRefDataService) {
             this.orderProp = 'age';
             this.query = '';
-
-            var resp = this.getPhonesList(phoneListResource);
-            resp.$promise.then((resp: IResourceArray<IPhoneListDef>) => {
-                this.phoneList = resp;
-            });
-        }
-
-        private getPhonesList(phoneListResource: IPhoneListResource): IResourceArray<IPhoneListDef> {
-            return phoneListResource.query();
+            phoneDataService
+                .getPhoneList()
+                .then((response: any) => {
+                    this.phoneList = response.data;
+                })
+                .catch((reason: any) => {
+                    console.log('Not loading ... ?');
+                });
         }
 
     }

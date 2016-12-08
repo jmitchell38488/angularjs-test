@@ -33,6 +33,6 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "tsd": "^0.6.5",
-    "typescript": "^2.0.10"
+    "typescript": "^1.8.10"
   }
 }

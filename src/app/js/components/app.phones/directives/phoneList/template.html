@@ -1,12 +1,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2">
-
             <p>
                 Search:
                 <input ng-model="phoneListCtrl.query" />
             </p>
-
             <p>
                 Sort by:
                 <select ng-model="phoneListCtrl.orderProp">
@@ -15,13 +13,10 @@
                 </select>
             </p>
         </div>
-
         <div class="col-md-10">
-            <ul class="phones">
+            <ul class="phones" ng-if="phoneListCtrl.phoneList">
                 <li class="thumbnail phone-list-item"
-                    ng-repeat="phone in phoneListCtrl.phoneList |
-                    filter: phoneListCtrl.query |
-                    orderBy: phoneListCtrl.orderProp" >
+                    ng-repeat="phone in phoneListCtrl.phoneList" >
                     <a href="#!/phones/{{phone.id}}" class="thumb">
                         <img ng-src="{{ phone.imageUrl }}"/>
                     </a>

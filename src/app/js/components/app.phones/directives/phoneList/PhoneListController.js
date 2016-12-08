@@ -9,29 +9,31 @@ var app;
             return {
                 restrict: 'AE',
                 controller: [
-                    'PhoneListResource',
+                    '$rootScope',
+                    'app.phones.PhoneRefDataService',
                     PhoneListController
                 ],
                 controllerAs: 'phoneListCtrl',
                 bindToController: {
                     phone: '='
                 },
-                templateUrl: 'js/components/app.phones/directives/list/template.html'
+                templateUrl: 'js/components/app.phones/directives/phoneList/template.html'
             };
         });
         var PhoneListController = (function () {
-            function PhoneListController(phoneListResource) {
+            function PhoneListController($rootScope, phoneDataService) {
                 var _this = this;
                 this.orderProp = 'age';
                 this.query = '';
-                var resp = this.getPhonesList(phoneListResource);
-                resp.$promise.then(function (resp) {
-                    _this.phoneList = resp;
+                phoneDataService
+                    .getPhoneList()
+                    .then(function (response) {
+                    _this.phoneList = response.data;
+                })
+                    .catch(function (reason) {
+                    console.log('Not loading ... ?');
                 });
             }
-            PhoneListController.prototype.getPhonesList = function (phoneListResource) {
-                return phoneListResource.query();
-            };
             return PhoneListController;
         }());
         phones.PhoneListController = PhoneListController;

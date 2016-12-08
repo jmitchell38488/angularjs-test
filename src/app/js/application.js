@@ -1,50 +1,154 @@
 /// <reference path='_all.ts' />
 angular.module('app', [
-    'ngRoute',
-    'ngResource',
     'app.phones'
 ]);
-/// <reference path='_all.ts' />
-angular.module('app')
-    .config(function ($routeProvider) {
-});
 /// <reference path='../../_all.ts' />
 var app;
 (function (app) {
     var phones;
     (function (phones) {
         var module = angular.module('app.phones', [
-            'ngResource',
             'ngRoute',
             'ngAnimate'
         ]);
-        module.config([
-            '$locationProvider', '$routeProvider',
-            function ($locationProvider, $routeProvider) {
-                $locationProvider.hashPrefix('!');
-                $routeProvider
-                    .when('/phones', {
-                    template: function () {
-                        return '<phone-list></phone-list>';
-                    },
-                    controller: 'app.phones.PhoneListController'
+    })(phones = app.phones || (app.phones = {}));
+})(app || (app = {}));
+;
+/// <reference path='../../../_all.ts' />
+/// <reference path='../../../_all.ts' />
+var app;
+(function (app) {
+    var phones;
+    (function (phones) {
+        var PhoneRefDataService = (function () {
+            function PhoneRefDataService($rootScope, $http, $q) {
+                this.$rootScope = $rootScope;
+                this.$http = $http;
+                this.$q = $q;
+                this.listUrl = '/res/phones/phones.json';
+                this.detailsUrl = '/res/phones/{id}.json';
+            }
+            PhoneRefDataService.prototype.getPhoneList = function () {
+                var d = this.$q.defer();
+                d.resolve(this.$http.get(this.listUrl));
+                return d.promise;
+            };
+            PhoneRefDataService.prototype.getPhoneDetails = function (config) {
+                var d = this.$q.defer();
+                var uri = this.detailsUrl.replace('{id}', config.id);
+                d.resolve(this.$http.get(uri));
+                return d.promise;
+            };
+            return PhoneRefDataService;
+        }());
+        phones.PhoneRefDataService = PhoneRefDataService;
+    })(phones = app.phones || (app.phones = {}));
+})(app || (app = {}));
+/// <reference path='../../../../_all.ts' />
+var app;
+(function (app) {
+    var phones;
+    (function (phones) {
+        angular
+            .module('app.phones')
+            .directive('phoneList', function () {
+            return {
+                restrict: 'AE',
+                controller: [
+                    '$rootScope',
+                    'app.phones.PhoneRefDataService',
+                    PhoneListController
+                ],
+                controllerAs: 'phoneListCtrl',
+                bindToController: {
+                    phone: '='
+                },
+                templateUrl: 'js/components/app.phones/directives/phoneList/template.html'
+            };
+        });
+        var PhoneListController = (function () {
+            function PhoneListController($rootScope, phoneDataService) {
+                var _this = this;
+                this.orderProp = 'age';
+                this.query = '';
+                phoneDataService
+                    .getPhoneList()
+                    .then(function (response) {
+                    _this.phoneList = response.data;
                 })
-                    .when('/phones/:phoneId', {
-                    template: function () {
-                        return '<phone-details></phone-details>';
-                    },
-                    controller: 'app.phones.PhoneDetailsController'
-                })
-                    .otherwise({
-                    redirectTo: '/phones'
+                    .catch(function (reason) {
+                    console.log('Not loading ... ?');
                 });
             }
-        ]);
+            return PhoneListController;
+        }());
+        phones.PhoneListController = PhoneListController;
+    })(phones = app.phones || (app.phones = {}));
+})(app || (app = {}));
+/// <reference path='../../../../_all.ts' />
+var app;
+(function (app) {
+    var phones;
+    (function (phones) {
+        angular
+            .module('app.phones')
+            .directive('phoneDetails', function () {
+            return {
+                restrict: 'AE',
+                controller: [
+                    '$routeParams',
+                    'app.phones.PhoneRefDataService',
+                    '$location',
+                    PhoneDetailsController
+                ],
+                controllerAs: 'phoneDetailsCtrl',
+                templateUrl: 'js/components/app.phones/directives/phoneDetails/template.html'
+            };
+        });
+        var PhoneDetailsController = (function () {
+            function PhoneDetailsController($routeParams, phoneDataService, $location) {
+                var _this = this;
+                this.phoneId = $routeParams['phoneId'];
+                phoneDataService
+                    .getPhoneDetails({ id: this.phoneId })
+                    .then(function (response) {
+                    console.log(response);
+                    // Redirect if the data was invalid
+                    if (!response.data || response.status >= 400) {
+                        $location.url('/phones');
+                    }
+                    _this.imageList = response.data.images;
+                    _this.currentImage = _this.imageList[0];
+                    _this.phoneDetails = response.data;
+                })
+                    .catch(function (reason) {
+                    $location.url('/phones');
+                });
+            }
+            return PhoneDetailsController;
+        }());
+        phones.PhoneDetailsController = PhoneDetailsController;
+    })(phones = app.phones || (app.phones = {}));
+})(app || (app = {}));
+/// <reference path='../../../_all.ts' />
+var app;
+(function (app) {
+    var phones;
+    (function (phones) {
+        var module = angular.module('app.phones');
         module.filter('checkmark', function () {
             return function (input) {
                 return input ? '\u2713' : '\u2718';
             };
         });
+    })(phones = app.phones || (app.phones = {}));
+})(app || (app = {}));
+/// <reference path='../../../_all.ts' />
+var app;
+(function (app) {
+    var phones;
+    (function (phones) {
+        var module = angular.module('app.phones');
         module.animation('.phone', function phoneAnimationFactory() {
             function animateIn(element, className, done) {
                 if (className !== 'selected') {
@@ -90,139 +194,56 @@ var app;
         });
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));
-;
+/// <reference path='../../../_all.ts' />
+var app;
+(function (app) {
+    var phones;
+    (function (phones) {
+        var module = angular.module('app.phones');
+        module.config([
+            '$locationProvider', '$routeProvider',
+            function ($locationProvider, $routeProvider) {
+                $locationProvider.hashPrefix('!');
+                $routeProvider
+                    .when('/phones', {
+                    template: function () {
+                        return '<phone-list></phone-list>';
+                    },
+                    controller: 'app.phones.PhoneListController'
+                })
+                    .when('/phones/:phoneId', {
+                    template: function () {
+                        return '<phone-details></phone-details>';
+                    },
+                    controller: 'app.phones.PhoneDetailsController'
+                })
+                    .otherwise({
+                    redirectTo: '/phones'
+                });
+            }
+        ]);
+    })(phones = app.phones || (app.phones = {}));
+})(app || (app = {}));
 /// <reference path='../../_all.ts' />
 var app;
 (function (app) {
     var phones;
     (function (phones) {
         var module = angular.module('app.phones');
+        module.service('app.phones.PhoneRefDataService', [
+            '$rootScope', '$http', '$q',
+            function ($rootScope, $http, $q) { return new phones.PhoneRefDataService($rootScope, $http, $q); }
+        ]);
         module.controller('app.phones.PhoneListController', [
-            'PhoneListResource',
-            function (PhoneListResource) { return new phones.PhoneListController(PhoneListResource); }
+            '$rootScope', 'app.phones.PhoneRefDataService',
+            function ($rootScope, IPhoneRefDataService) { return new phones.PhoneListController($rootScope, IPhoneRefDataService); }
         ]);
         module.controller('app.phones.PhoneDetailsController', [
-            '$routeParams', 'PhoneDetailsResource', '$location',
-            function ($routeParams, PhoneDetailsResource, $location) {
-                return new phones.PhoneDetailsController($routeParams, PhoneDetailsResource, $location);
+            '$routeParams', 'app.phones.PhoneRefDataService', '$location',
+            function ($routeParams, IPhoneRefDataService, $location) {
+                return new phones.PhoneDetailsController($routeParams, IPhoneRefDataService, $location);
             }
         ]);
-    })(phones = app.phones || (app.phones = {}));
-})(app || (app = {}));
-/// <reference path='../../../_all.ts' />
-/// <reference path='../../../_all.ts' />
-var app;
-(function (app) {
-    var phones;
-    (function (phones) {
-        var module = angular.module('app.phones');
-        module.factory('PhoneListResource', [
-            '$resource',
-            function ($resource) {
-                return $resource('/res/phones/phones.json', {}, {
-                    query: {
-                        method: 'GET',
-                        isArray: true
-                    }
-                });
-            }
-        ]);
-        module.factory('PhoneDetailsResource', [
-            '$resource',
-            function ($resource) {
-                return $resource('/res/phones/:id.json', { id: '@id' }, {
-                    get: {
-                        method: 'GET'
-                    }
-                });
-            }
-        ]);
-    })(phones = app.phones || (app.phones = {}));
-})(app || (app = {}));
-/// <reference path='../../../../_all.ts' />
-var app;
-(function (app) {
-    var phones;
-    (function (phones) {
-        angular
-            .module('app.phones')
-            .directive('phoneList', function () {
-            return {
-                restrict: 'AE',
-                controller: [
-                    'PhoneListResource',
-                    PhoneListController
-                ],
-                controllerAs: 'phoneListCtrl',
-                bindToController: {
-                    phone: '='
-                },
-                templateUrl: 'js/components/app.phones/directives/list/template.html'
-            };
-        });
-        var PhoneListController = (function () {
-            function PhoneListController(phoneListResource) {
-                var _this = this;
-                this.orderProp = 'age';
-                this.query = '';
-                var resp = this.getPhonesList(phoneListResource);
-                resp.$promise.then(function (resp) {
-                    _this.phoneList = resp;
-                });
-            }
-            PhoneListController.prototype.getPhonesList = function (phoneListResource) {
-                return phoneListResource.query();
-            };
-            return PhoneListController;
-        }());
-        phones.PhoneListController = PhoneListController;
-    })(phones = app.phones || (app.phones = {}));
-})(app || (app = {}));
-/// <reference path='../../../../_all.ts' />
-var app;
-(function (app) {
-    var phones;
-    (function (phones) {
-        angular
-            .module('app.phones')
-            .directive('phoneDetails', function () {
-            return {
-                restrict: 'AE',
-                controller: [
-                    '$routeParams',
-                    'PhoneDetailsResource',
-                    '$location',
-                    PhoneDetailsController
-                ],
-                controllerAs: 'phoneDetailsCtrl',
-                templateUrl: 'js/components/app.phones/directives/details/template.html'
-            };
-        });
-        var PhoneDetailsController = (function () {
-            function PhoneDetailsController($routeParams, phoneDetailsResource, $location) {
-                this.phoneId = $routeParams['phoneId'];
-                this.loadPhoneDetails(phoneDetailsResource, $location);
-            }
-            // TODO: Replace with promise
-            PhoneDetailsController.prototype.loadPhoneDetails = function (phoneDetailsResource, location) {
-                var _this = this;
-                phoneDetailsResource.get({ id: this.phoneId }, function (phoneDetails) {
-                    // Redirect if the data was invalid
-                    if (phoneDetails == null || phoneDetails == undefined) {
-                        location.url('/phones');
-                    }
-                    _this.imageList = phoneDetails.images;
-                    _this.currentImage = _this.imageList[0];
-                    _this.phoneDetails = phoneDetails;
-                    // GMC: do not use the old 'error' syntax.  Use the promise 'catch'
-                }, function () {
-                    // Any error just redirect back to the list page
-                    location.url('/phones');
-                });
-            };
-            return PhoneDetailsController;
-        }());
-        phones.PhoneDetailsController = PhoneDetailsController;
     })(phones = app.phones || (app.phones = {}));
 })(app || (app = {}));
 /// <reference path='../../../typings/jquery/jquery.d.ts' />
@@ -231,11 +252,13 @@ var app;
 /// <reference path='../../../typings/angularjs/angular-resource.d.ts' />
 /// <reference path='../../../typings/angularjs/angular-animate.d.ts' />
 /// <reference path='app.ts' />
-/// <reference path='app.config.ts' />
 /// <reference path='components/app.phones/module.ts' />
-/// <reference path='components/app.phones/component.ts' />
 /// <reference path='components/app.phones/domain/PhoneModel.ts' />
-/// <reference path='components/app.phones/services/PhoneListService.ts' />
-/// <reference path='components/app.phones/directives/list/PhoneList.ts' />
-/// <reference path='components/app.phones/directives/details/PhoneDetails.ts' />
+/// <reference path='components/app.phones/services/PhoneRefDataService.ts' />
+/// <reference path='components/app.phones/directives/phoneList/PhoneListController.ts' />
+/// <reference path='components/app.phones/directives/phoneDetails/PhoneDetailsController.ts' />
+/// <reference path='components/app.phones/filters/CheckmarkFilter.ts' />
+/// <reference path='components/app.phones/animations/ImageGalleryAnimation.ts' />
+/// <reference path='components/app.phones/config/Config.ts' />
+/// <reference path='components/app.phones/component.ts' />
 //# sourceMappingURL=application.js.map
