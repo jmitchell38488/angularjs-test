@@ -29,8 +29,9 @@ namespace app.phones {
         public orderProp: string;
 
         constructor($rootScope: ng.IRootScopeService, phoneDataService : IPhoneRefDataService) {
-            this.orderProp = 'age';
+            this.orderProp = '';
             this.query = '';
+
             phoneDataService
                 .getPhoneList()
                 .then((response: any) => {

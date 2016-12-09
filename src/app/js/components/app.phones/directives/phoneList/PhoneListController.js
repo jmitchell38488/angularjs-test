@@ -23,7 +23,7 @@ var app;
         var PhoneListController = (function () {
             function PhoneListController($rootScope, phoneDataService) {
                 var _this = this;
-                this.orderProp = 'age';
+                this.orderProp = '';
                 this.query = '';
                 phoneDataService
                     .getPhoneList()
