@@ -4,8 +4,7 @@ var app;
     var phones;
     (function (phones) {
         var PhoneRefDataService = (function () {
-            function PhoneRefDataService($rootScope, $http, $q) {
-                this.$rootScope = $rootScope;
+            function PhoneRefDataService($http, $q) {
                 this.$http = $http;
                 this.$q = $q;
                 this.listUrl = '/res/phones/phones.json';

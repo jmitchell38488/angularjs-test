@@ -2,15 +2,13 @@ var app;
 (function (app) {
     var phones;
     (function (phones) {
-        describe('app.phones.PhoneListService', function () {
+        describe('app.phones.PhoneDetailsController', function () {
             var $httpBackend;
-            var phoneListResource;
-            var phoneDetailsResource;
-            var phonesData = [
-                { id: 0, age: 2, imageUrl: "", name: 'Nexus S', snippet: 'Fast just got faster with Nexus S.' },
-                { id: 1, age: 1, imageUrl: "", name: 'Motorola XOOM™ with Wi-Fi', snippet: 'The Next, Next Generation tablet.' },
-                { id: 2, age: 0, imageUrl: "", name: 'MOTOROLA XOOM™', snippet: 'The Next, Next Generation tablet.' }
-            ];
+            var $q;
+            var $scope;
+            var deferred;
+            var ctrl;
+            var phoneRefDataService;
             var phoneDetails = {
                 "additionalFeatures": "Sensors: proximity, ambient light, barometer, gyroscope",
                 "android": {
@@ -79,32 +77,53 @@ var app;
             beforeEach(function () {
                 jasmine.addCustomEqualityTester(angular.equals);
                 angular.mock.module('app.phones');
-                inject(function (_$httpBackend_, _PhoneListResource_, _PhoneDetailsResource_) {
+                inject(function (_$httpBackend_, _$q_, $injector, $routeParams, _$rootScope_) {
+                    $q = _$q_;
+                    $scope = _$rootScope_.$new();
+                    deferred = _$q_.defer();
                     $httpBackend = _$httpBackend_;
-                    $httpBackend.when('GET', '/res/phones/phones.json').respond(phonesData);
                     $httpBackend.when('GET', '/res/phones/test123.json').respond(phoneDetails);
-                    phoneListResource = _PhoneListResource_;
-                    phoneDetailsResource = _PhoneDetailsResource_;
+                    $routeParams.phoneId = 'test123';
+                    phoneRefDataService = jasmine.createSpyObj('PhoneRefDataService', ['getPhoneDetails']);
+                    phoneRefDataService.getPhoneDetails.and.returnValue(deferred.promise);
+                    ctrl = $injector.get('$controller')('app.phones.PhoneDetailsController', { $routeParams: $routeParams, IPhoneDetailsResource: phoneRefDataService });
                 });
             });
-            afterEach(function () {
-                $httpBackend.verifyNoOutstandingExpectation();
-                $httpBackend.verifyNoOutstandingRequest();
-            });
-            describe('WHEN I request phone list data from `res/phones/phones.json`', function () {
-                it('WILL return valid phone data', function () {
-                    var phoneList = phoneListResource.query();
-                    expect(phoneList).toEqual([]);
+            describe('WHEN I instantiate a new controller', function () {
+                afterEach(function () {
+                    $httpBackend.verifyNoOutstandingExpectation();
+                    $httpBackend.verifyNoOutstandingRequest();
+                });
+                it('WILL fetch phone details with `$http`', function () {
+                    deferred.resolve([phoneDetails]);
+                    $scope.$apply();
                     $httpBackend.flush();
-                    expect(phoneList).toEqual(phonesData);
+                    expect(ctrl.phoneDetails).toEqual(phoneDetails);
+                });
+                it('WILL set `imageList` to be the images fetched from `$http`', function () {
+                    deferred.resolve([phoneDetails]);
+                    $scope.$apply();
+                    $httpBackend.flush();
+                    expect(ctrl.imageList).toEqual(phoneDetails.images);
+                });
+                it('WILL set `currentImage` to be the first image in the imageList property', function () {
+                    deferred.resolve([phoneDetails]);
+                    $scope.$apply();
+                    $httpBackend.flush();
+                    expect(ctrl.currentImage).toBe(phoneDetails.images[0]);
                 });
             });
-            describe('WHEN I request phone detail data from`res/phones/test123.json`', function () {
-                it('WILL return valid phone detail data', function () {
-                    var details = phoneDetailsResource.get({ id: 'test123' });
-                    expect(details).not.toBe(undefined);
+            describe('WHEN I change the current image', function () {
+                afterEach(function () {
+                    $httpBackend.verifyNoOutstandingExpectation();
+                    $httpBackend.verifyNoOutstandingRequest();
+                });
+                it('WILL update the current image to the new image', function () {
+                    deferred.resolve([phoneDetails]);
+                    $scope.$apply();
                     $httpBackend.flush();
-                    expect(details).toEqual(phoneDetails);
+                    ctrl.currentImage = phoneDetails.images[1];
+                    expect(ctrl.currentImage).toBe(phoneDetails.images[1]);
                 });
             });
         });

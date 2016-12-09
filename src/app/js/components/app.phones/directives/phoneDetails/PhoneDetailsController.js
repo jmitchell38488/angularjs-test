@@ -25,7 +25,6 @@ var app;
                 phoneDataService
                     .getPhoneDetails({ id: this.phoneId })
                     .then(function (response) {
-                    console.log(response);
                     // Redirect if the data was invalid
                     if (!response.data || response.status >= 400) {
                         $location.url('/phones');

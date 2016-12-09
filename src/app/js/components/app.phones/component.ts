@@ -5,8 +5,8 @@ namespace app.phones {
     var module: angular.IModule = angular.module('app.phones');
 
     module.service('app.phones.PhoneRefDataService', [
-        '$rootScope','$http','$q',
-        ($rootScope, $http, $q) => new PhoneRefDataService($rootScope, $http, $q)
+        '$http','$q',
+        ($http, $q) => new PhoneRefDataService($http, $q)
     ]);
 
     module.controller('app.phones.PhoneListController', [

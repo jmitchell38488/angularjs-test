@@ -16,7 +16,7 @@ namespace app.phones {
         private listUrl: string = '/res/phones/phones.json';
         private detailsUrl: string = '/res/phones/{id}.json';
 
-        constructor(private $rootScope : ng.IRootScopeService, private $http : angular.IHttpService, private $q : angular.IQService) {}
+        constructor(private $http : angular.IHttpService, private $q : angular.IQService) {}
 
         public getPhoneList(): angular.IPromise<IPhoneListResource> {
             var d = this.$q.defer();

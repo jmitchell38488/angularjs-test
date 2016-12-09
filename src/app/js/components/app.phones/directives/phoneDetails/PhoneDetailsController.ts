@@ -34,7 +34,6 @@ namespace app.phones {
             phoneDataService
                 .getPhoneDetails({id: this.phoneId})
                 .then((response: any) => {
-                console.log(response);
                     // Redirect if the data was invalid
                     if (!response.data || response.status >= 400) {
                         $location.url('/phones');

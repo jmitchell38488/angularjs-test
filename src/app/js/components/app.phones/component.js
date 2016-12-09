@@ -5,8 +5,8 @@ var app;
     (function (phones) {
         var module = angular.module('app.phones');
         module.service('app.phones.PhoneRefDataService', [
-            '$rootScope', '$http', '$q',
-            function ($rootScope, $http, $q) { return new phones.PhoneRefDataService($rootScope, $http, $q); }
+            '$http', '$q',
+            function ($http, $q) { return new phones.PhoneRefDataService($http, $q); }
         ]);
         module.controller('app.phones.PhoneListController', [
             '$rootScope', 'app.phones.PhoneRefDataService',

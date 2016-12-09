@@ -21,8 +21,7 @@ var app;
     var phones;
     (function (phones) {
         var PhoneRefDataService = (function () {
-            function PhoneRefDataService($rootScope, $http, $q) {
-                this.$rootScope = $rootScope;
+            function PhoneRefDataService($http, $q) {
                 this.$http = $http;
                 this.$q = $q;
                 this.listUrl = '/res/phones/phones.json';
@@ -112,7 +111,6 @@ var app;
                 phoneDataService
                     .getPhoneDetails({ id: this.phoneId })
                     .then(function (response) {
-                    console.log(response);
                     // Redirect if the data was invalid
                     if (!response.data || response.status >= 400) {
                         $location.url('/phones');
@@ -231,8 +229,8 @@ var app;
     (function (phones) {
         var module = angular.module('app.phones');
         module.service('app.phones.PhoneRefDataService', [
-            '$rootScope', '$http', '$q',
-            function ($rootScope, $http, $q) { return new phones.PhoneRefDataService($rootScope, $http, $q); }
+            '$http', '$q',
+            function ($http, $q) { return new phones.PhoneRefDataService($http, $q); }
         ]);
         module.controller('app.phones.PhoneListController', [
             '$rootScope', 'app.phones.PhoneRefDataService',
